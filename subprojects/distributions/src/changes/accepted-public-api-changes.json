@@ -23,6 +23,21 @@
             "changes": [
                 "METHOD_ADDED_TO_PUBLIC_CLASS"
             ]
-        }
-    ]
+        },
+        {
+            "type": "org.gradle.api.tasks.AbstractCopyTask",
+            "member": "Method org.gradle.api.tasks.AbstractCopyTask.getFileCollectionFactory()",
+            "acceptation": "Removed an injection method",
+            "changes": [
+                "Method has been removed"
+            ]
+        },
+        {
+            "type": "org.gradle.api.tasks.testing.Test",
+            "member": "Method org.gradle.api.tasks.testing.Test.getFileResolver()",
+            "acceptation": "Removed an injection method",
+            "changes": [
+                "Method has been removed"
+            ]
+        }    ]
 }
