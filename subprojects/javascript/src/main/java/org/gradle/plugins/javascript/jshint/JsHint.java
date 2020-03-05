@@ -31,12 +31,12 @@ import org.gradle.api.tasks.PathSensitive;
 import org.gradle.api.tasks.PathSensitivity;
 import org.gradle.api.tasks.SourceTask;
 import org.gradle.api.tasks.TaskAction;
-import org.gradle.plugins.javascript.jshint.internal.JsHintProtocol;
 import org.gradle.plugins.javascript.jshint.internal.JsHintResult;
 import org.gradle.plugins.javascript.jshint.internal.JsHintSpec;
 import org.gradle.plugins.javascript.jshint.internal.JsHintWorker;
 import org.gradle.plugins.javascript.rhino.worker.internal.DefaultRhinoWorkerHandleFactory;
 import org.gradle.plugins.javascript.rhino.worker.internal.RhinoWorkerHandleFactory;
+import org.gradle.process.internal.worker.RequestHandler;
 import org.gradle.process.internal.worker.WorkerProcessFactory;
 
 import javax.inject.Inject;
@@ -137,14 +137,14 @@ public class JsHint extends SourceTask {
         RhinoWorkerHandleFactory handleFactory = new DefaultRhinoWorkerHandleFactory(getWorkerProcessBuilderFactory());
 
         LogLevel logLevel = getProject().getGradle().getStartParameter().getLogLevel();
-        JsHintProtocol worker = handleFactory.create(getRhinoClasspath(), JsHintProtocol.class, JsHintWorker.class, logLevel, getProject().getProjectDir());
+        RequestHandler<JsHintSpec, JsHintResult> worker = handleFactory.create(getRhinoClasspath(), JsHintWorker.class, logLevel, getProject().getProjectDir());
 
         JsHintSpec spec = new JsHintSpec();
         spec.setSource(getSource().getFiles()); // flatten because we need to serialize
         spec.setEncoding(getEncoding());
         spec.setJsHint(getJsHint().getSingleFile());
 
-        JsHintResult result = worker.process(spec);
+        JsHintResult result = worker.run(spec);
         setDidWork(true);
 
         // TODO - this is all terribly lame. We need some proper reporting here (which means implementing Reporting).
