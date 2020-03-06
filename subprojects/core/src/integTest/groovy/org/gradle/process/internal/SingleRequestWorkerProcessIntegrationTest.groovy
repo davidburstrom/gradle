@@ -76,6 +76,9 @@ class CustomResult implements Serializable {
         e.message == 'Could not convert abc'
 
         when:
+
+        println "-> STARTING SECOND EXECUTION"
+
         def result = worker.run("ok")
 
         then:
@@ -87,8 +90,26 @@ class CustomResult implements Serializable {
         def builder = workerFactory.singleRequestWorker(TestWorker.class)
         def worker = builder.build()
         def result1 = worker.run(12.toLong())
+
+        println "-> STARTING SECOND EXECUTION"
+
         def result2 = worker.run(null)
+
+        println "-> STARTING THIRD EXECUTION"
+
         def result3 = worker.run(123.toLong())
+
+        then:
+        result1 == "[12]"
+        result2 == null
+        result3 == "[123]"
+    }
+
+    def "can create multiple proxies"() {
+        when:
+        def result1 = workerFactory.singleRequestWorker(TestWorker.class).build().run(12.toLong())
+        def result2 = workerFactory.singleRequestWorker(TestWorker.class).build().run(null)
+        def result3 = workerFactory.singleRequestWorker(TestWorker.class).build().run(123.toLong())
 
         then:
         result1 == "[12]"
