@@ -18,7 +18,6 @@ package org.gradle.process.internal.worker;
 
 import org.gradle.api.Action;
 import org.gradle.internal.serialize.Serializer;
-import org.gradle.internal.serialize.SerializerRegistry;
 
 /**
  * Configures and builds multi-request workers. A multi-request worker runs zero or more requests in a forked worker process.
