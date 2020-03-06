@@ -40,9 +40,10 @@ public class RequestSerializer implements Serializer<Request> {
         });
 
         encoder.writeLong(request.getBuildOperation().getId().getId());
-        if (request.getBuildOperation().getParentId() != null) {
+        OperationIdentifier parentId = request.getBuildOperation().getParentId();
+        if (parentId != null) {
             encoder.writeBoolean(true);
-            encoder.writeLong(request.getBuildOperation().getParentId().getId());
+            encoder.writeLong(parentId.getId());
         } else {
             encoder.writeBoolean(false);
         }
